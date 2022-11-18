@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background-color: white;
+}
+.buttons {
+  background-color: #1da599;
+  margin-left: 0.5em;
+  outline: none;
+  border: none;
+}
+.buttons:hover {
+  cursor: pointer;
+  background-color: #0f615a;
+}
+a {
+  color: #1da599;
+}
+a:hover {
+  text-decoration: none;
+  color: #0f615a;
+}
+
+.heading {
+  margin-top: 5rem;
+}
+.heading2 {
+  margin-top: 3rem;
+}
+
+.error {
+  color: red;
+  font-size: 11px;
+  margin-top: -2px;
+}
+.form-group.required .control-label:after {
+  content: "*";
+  color: red;
+}
+.contain {
+  display: flex;
+}
+main {
+  width: 100%;
+  padding: 20px;
+}
+.sidebar {
+  background: #1da599;
+  color: #fff;
+  height: 100vh;
+  width: 200px;
+  transition: all 0.5s;
+}
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+.logo {
+  font-size: 30px;
+}
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+.link {
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover {
+  background: lightskyblue;
+  color: #000;
+  transition: all 0.5s;
+}
+.active {
+  background: lightskyblue;
+  color: #000;
+}
+.icon,
+.link_text {
+  font-size: 20px;
+}
