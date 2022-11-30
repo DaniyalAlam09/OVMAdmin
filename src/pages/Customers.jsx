@@ -6,6 +6,10 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import TablePagination from "@mui/material/TablePagination";
+// import SearchIcon from "@material-ui/icons/Search";
+import Toolbar from "@mui/material/Toolbar";
+import InputBase from "@mui/material/InputBase";
+import { styled, alpha } from "@mui/material/styles";
 
 import Paper from "@mui/material/Paper";
 const style = {
@@ -20,10 +24,54 @@ const style = {
   p: 4,
 };
 
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: " rgba(218, 216, 216, 0.26)",
+  "&:hover": {
+    backgroundColor: "rgba(218, 216, 216, 0.26)",
+    // width: "80%",
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "100%",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "50ch",
+      "&:focus": {
+        width: "70ch",
+      },
+    },
+  },
+}));
+
 const Customers = () => {
   const [user, setUser] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [search, setSearch] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -37,7 +85,6 @@ const Customers = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  // const Data = () => {
   useEffect(() => {
     fetch("http://localhost:4000/admins/viewcustomers")
       .then((response) => response.json())
@@ -54,14 +101,11 @@ const Customers = () => {
     //   console.log(res.data);
     // });
   }, []);
-  // };
-  // const _id = user._id;
 
-  // const userID = Object.values(user).map(user._id);
   const handleDelete = (id) => {
     // console.log(userID);
     axios
-      .get(`http://localhost:4000/admins/deleteuser/${id}`)
+      .delete(`http://localhost:4000/admins/deleteuser/${id}`)
       .then((user) => {
         console.log("user delete");
         navigate(0);
@@ -73,10 +117,28 @@ const Customers = () => {
   };
 
   return (
-    <Paper sx={{ width: "100%" }}>
-      <h5>Total Registered Customers</h5>
-      <h6>{user.length}</h6>
-      <table className="table">
+    <div className="text-center ml-3 mt-4">
+      <h5 style={{ display: "inline-block" }}>Total Registered Customers =</h5>
+      <h5 style={{ display: "inline-block" }}>{user.length}</h5>
+      <div class=" container d-flex justify-content-center">
+        <div className="">
+          <Box>
+            <Toolbar>
+              <Search>
+                {/* <SearchIconWrapper><SearchIcon /></SearchIconWrapper> */}
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+              </Search>
+            </Toolbar>
+          </Box>
+        </div>
+      </div>
+      <table className="table table-hover table-striped">
         <thead>
           <tr>
             <th>Sr #</th>
@@ -90,10 +152,20 @@ const Customers = () => {
         </thead>
         <tbody>
           {Object.values(user)
+            .filter((person) => {
+              if (search == "") {
+                return person;
+              } else if (
+                person.firstName.toLowerCase().includes(search.toLowerCase()) ||
+                person.lastName.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return person;
+              }
+            })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item, index) => (
               <tr key={index}>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td>{item.firstName}</td>
                 <td>{item.lastName}</td>
                 <td>{item.email}</td>
@@ -193,7 +265,7 @@ const Customers = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </Paper>
+    </div>
   );
 };
 
