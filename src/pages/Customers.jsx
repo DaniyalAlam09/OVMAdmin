@@ -194,14 +194,19 @@ const Customers = () => {
                         Are You Sure
                       </Typography>
                       <br />
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={() => {
-                          handleDelete(item._id);
-                        }}
+                      <form
+                        action="/<%= item.id %>?_method=DELETE"
+                        method="POST"
                       >
-                        Delete
-                      </button>
+                        <button
+                          className="buttons btn text-white btn-block btn-danger"
+                          onClick={() => {
+                            handleDelete(item._id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </form>
                       <button
                         className="buttons btn text-white btn-block btn-danger"
                         onClick={handleClose}
