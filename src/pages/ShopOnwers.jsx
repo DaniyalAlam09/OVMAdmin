@@ -11,6 +11,14 @@ import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,21 +75,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Dashboard = () => {
   const [user, setUser] = useState("");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(7);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [blocked, setBlocked] = React.useState(false);
+  const [deleteshop, setDeleteShop] = React.useState(false);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+    setBlocked(false);
+    setDeleteShop(false);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
   useEffect(() => {
+    fetchShops();
+  }, []);
+  const fetchShops = () => {
     fetch("http://localhost:4000/admins/viewshopowners")
       .then((response) => response.json())
       .then((actualData) => {
@@ -92,17 +113,47 @@ const Dashboard = () => {
       .catch((err) => {
         console.log(err.message);
       });
-    // then((res) => {
-    //   setUser(res.data.user);
-    //   console.log(res.data);
-    // });
-  }, []);
+  };
   const handleDelete = (id) => {
     // console.log(userID);
     axios
       .get(`http://localhost:4000/admins/deleteshopowner/${id}`)
       .then((user) => {
         console.log(id);
+        fetchShops();
+        setDeleteShop(true);
+
+        // navigate(0);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    // console.log("dcwj");
+  };
+  const handleBlock = (id) => {
+    // console.log(userID);
+    axios
+      .post(`http://localhost:4000/admins/block/${id}`)
+      .then((user) => {
+        console.log(id);
+        fetchShops();
+        setOpen(true);
+
+        // navigate(0);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    // console.log("dcwj");
+  };
+  const handleUnBlock = (id) => {
+    // console.log(userID);
+    axios
+      .post(`http://localhost:4000/admins/unblock/${id}`)
+      .then((user) => {
+        console.log(id);
+        fetchShops();
+        setBlocked(true);
 
         // navigate(0);
       })
@@ -114,8 +165,8 @@ const Dashboard = () => {
 
   return (
     <div className="text-center mt-4">
-      <h5 style={{ display: "inline-block" }}>Total Registered ShopOnwers</h5>
-      <h6 style={{ display: "inline-block" }}>{user.length}</h6>
+      <h5 style={{ display: "inline-block" }}>Total Registered Customers =</h5>
+      <h5 style={{ display: "inline-block" }}>{user.length}</h5>
       <div class=" container d-flex justify-content-center">
         <div className="">
           <Box>
@@ -138,15 +189,18 @@ const Dashboard = () => {
         <thead>
           <tr>
             <th>Sr #</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            {/* <th>Last Name</th> */}
             <th>Email</th>
+            <th>Status</th>
             <th>Shop Name</th>
             <th>Shop Number</th>
             <th>Floor</th>
+            <th>No Of Products</th>
             {/* <th>Catagorey</th> */}
             <th>Phone Number</th>
             <th>Delete User</th>
+            <th>Block User</th>
           </tr>
         </thead>
         <tbody>
@@ -163,63 +217,79 @@ const Dashboard = () => {
             })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item, index) => (
-              <tr key={index}>
+              <tr key={index} style={{ cursor: "pointer" }}>
                 <td>{index + 1}</td>
-                <td>{item.firstName}</td>
-                <td>{item.lastName}</td>
+                <td>
+                  {item.firstName} {item.lastName}
+                </td>
+                {/* <td>{item.lastName}</td> */}
                 <td>{item.email}</td>
+                <td>
+                  {item?.verified === true && <>Verified</>}{" "}
+                  {item?.verified === false && <>Unverified</>}
+                </td>
                 <td>{item.shopName}</td>
                 <td>{item.shopNo}</td>
                 <td>{item.floor}</td>
-                {/* <td>{item.catagorey}</td> */}
+                <td>{item?.products.length}</td>
                 <td>{item.phone}</td>
                 <td>
                   <button
-                    onClick={handleOpen}
+                    onClick={() => {
+                      handleDelete(item._id);
+                    }}
                     className="buttons btn text-white btn-block btn-danger"
                   >
                     {" "}
                     Delete
                   </button>
-                  <Modal
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="keep-mounted-modal-title"
-                    aria-describedby="keep-mounted-modal-description"
-                  >
-                    <Box sx={style}>
-                      <Typography
-                        id="keep-mounted-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        Are You Sure
-                      </Typography>
-                      <br />
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={() => {
-                          handleDelete(item._id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={handleClose}
-                      >
-                        Cancel
-                      </button>
-                    </Box>
-                  </Modal>
+                </td>
+                <td>
+                  {item?.verified === true && (
+                    <button
+                      onClick={() => {
+                        handleBlock(item._id);
+                      }}
+                      className="buttons btn text-white btn-block btn-danger"
+                    >
+                      {" "}
+                      Block
+                    </button>
+                  )}
+
+                  {item?.verified === false && (
+                    <button
+                      onClick={() => {
+                        handleUnBlock(item._id);
+                      }}
+                      className="buttons btn text-white btn-block btn-danger"
+                    >
+                      {" "}
+                      Unblock
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Shop Blocked successfully
+        </Alert>
+      </Snackbar>
+      <Snackbar open={blocked} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Shop Unblocked successfully
+        </Alert>
+      </Snackbar>
+      <Snackbar open={deleteshop} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Shop Deleted successfully
+        </Alert>
+      </Snackbar>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[7, 25, 100]}
         component="div"
         count={user.length}
         rowsPerPage={rowsPerPage}

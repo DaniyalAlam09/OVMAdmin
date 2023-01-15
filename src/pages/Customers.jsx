@@ -10,8 +10,16 @@ import TablePagination from "@mui/material/TablePagination";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
-
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MuiAlert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -72,20 +80,29 @@ const Customers = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = React.useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
   useEffect(() => {
+    fetchUsers();
+  }, []);
+  const fetchUsers = () => {
     fetch("http://localhost:4000/admins/viewcustomers")
       .then((response) => response.json())
       .then((actualData) => {
@@ -96,11 +113,7 @@ const Customers = () => {
       .catch((err) => {
         console.log(err.message);
       });
-    // then((res) => {
-    //   setUser(res.data.user);
-    //   console.log(res.data);
-    // });
-  }, []);
+  };
 
   const handleDelete = (id) => {
     // console.log(userID);
@@ -108,7 +121,8 @@ const Customers = () => {
       .delete(`http://localhost:4000/admins/deleteuser/${id}`)
       .then((user) => {
         console.log("user delete");
-        navigate(0);
+        fetchUsers();
+        setOpen(true);
       })
       .catch((error) => {
         console.log(error.message);
@@ -142,12 +156,11 @@ const Customers = () => {
         <thead>
           <tr>
             <th>Sr #</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            {/* <th>Last Name</th> */}
             <th>Email</th>
-            <th>ID</th>
+            <th>Phone</th>
             <th>Delete User</th>
-            <th>BLock User</th>
           </tr>
         </thead>
         <tbody>
@@ -164,103 +177,34 @@ const Customers = () => {
             })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item, index) => (
-              <tr key={index}>
+              <tr key={index} style={{ cursor: "pointer" }}>
                 <td>{index + 1}</td>
-                <td>{item.firstName}</td>
-                <td>{item.lastName}</td>
+                <td>
+                  {item.firstName} {item.lastName}
+                </td>
+                {/* <td>{item.lastName}</td> */}
                 <td>{item.email}</td>
-                <td>{item._id}</td>
+                <td>{item.phoneNo}</td>
                 <td>
                   <button
-                    onClick={handleOpen}
+                    onClick={() => {
+                      handleDelete(item._id);
+                    }}
                     className="buttons btn text-white btn-block btn-danger"
                   >
                     {" "}
                     Delete
                   </button>
-                  <Modal
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="keep-mounted-modal-title"
-                    aria-describedby="keep-mounted-modal-description"
-                  >
-                    <Box sx={style}>
-                      <Typography
-                        id="keep-mounted-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        Are You Sure
-                      </Typography>
-                      <br />
-                      <form
-                        action="/<%= item.id %>?_method=DELETE"
-                        method="POST"
-                      >
-                        <button
-                          className="buttons btn text-white btn-block btn-danger"
-                          onClick={() => {
-                            handleDelete(item._id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </form>
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={handleClose}
-                      >
-                        Cancel
-                      </button>
-                    </Box>
-                  </Modal>
-                </td>
-                <td>
-                  <button
-                    onClick={handleOpen}
-                    className="buttons btn text-white btn-block btn-danger"
-                  >
-                    {" "}
-                    Block
-                  </button>
-                  <Modal
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="keep-mounted-modal-title"
-                    aria-describedby="keep-mounted-modal-description"
-                  >
-                    <Box sx={style}>
-                      <Typography
-                        id="keep-mounted-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        Are You Sure
-                      </Typography>
-                      <br />
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={() => {
-                          handleDelete(item._id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                      <button
-                        className="buttons btn text-white btn-block btn-danger"
-                        onClick={handleClose}
-                      >
-                        Cancel
-                      </button>
-                    </Box>
-                  </Modal>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          User Delete successfully
+        </Alert>
+      </Snackbar>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
