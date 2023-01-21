@@ -231,7 +231,7 @@ const Dashboard = () => {
                 <td>{item.shopName}</td>
                 <td>{item.shopNo}</td>
                 <td>{item.floor}</td>
-                <td>{item?.products.length}</td>
+                <td>{item?.products?.length}</td>
                 <td>{item.phone}</td>
                 <td>
                   <button
