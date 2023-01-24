@@ -131,7 +131,7 @@ const Customers = () => {
   };
 
   return (
-    <div className="text-center ml-3 mt-4">
+    <div className="text-center ml-3 mt-4" style={{ width: "100%" }}>
       <h5 style={{ display: "inline-block" }}>Total Registered Customers =</h5>
       <h5 style={{ display: "inline-block" }}>{user.length}</h5>
       <div class=" container d-flex justify-content-center">

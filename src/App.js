@@ -8,6 +8,8 @@ import ShopOwners from "./pages/ShopOnwers";
 import Customers from "./pages/Customers.jsx";
 import Product from "./pages/Logout.jsx";
 import ProductList from "./pages/ProductList.jsx";
+import Subscription from "./pages/Subscription.js";
+import Quries from "./pages/Quries.js";
 import Login from "./components/Login";
 import Homex from "./pages/Homex";
 import Logout from "./pages/Logout.jsx";
@@ -24,6 +26,8 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="customers" element={<Customers />} />
           <Route path="shopowners" element={<ShopOwners />} />
+          <Route path="quries" element={<Quries />} />
+          <Route path="subscription" element={<Subscription />} />
           <Route path="logout" element={<Logout />} />
         </Route>
         {/* <Route path="/product" element={<Product />} />

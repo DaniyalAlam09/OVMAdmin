@@ -6,6 +6,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +32,16 @@ const Sidebar = ({ children }) => {
       path: "shopowners",
       name: "Shop Owners",
       icon: <ShopIcon />,
+    },
+    {
+      path: "quries",
+      name: "Quries",
+      icon: <ContactEmergencyIcon />,
+    },
+    {
+      path: "subscription",
+      name: "Subscription",
+      icon: <SubscriptionsIcon />,
     },
     {
       path: "logout",
