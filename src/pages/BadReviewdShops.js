@@ -15,22 +15,11 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiAlert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
+import { Link } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  // border: "2px solid #000",
-  // boxShadow: 24,
-  p: 4,
-};
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -46,6 +35,16 @@ const Search = styled("div")(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: "100%",
   },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -65,34 +64,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const ReadMore = ({ children }) => {
-  const text = children;
-  const [isReadMore, setIsReadMore] = useState(true);
-  const toggleReadMore = () => {
-    setIsReadMore(!isReadMore);
-  };
-  return (
-    <p className="text">
-      {isReadMore ? text.slice(0, 150) : text}
-      <span
-        onClick={toggleReadMore}
-        className="read-or-hide underline"
-        style={{ color: "grey" }}
-      >
-        {isReadMore ? "...read more" : " show less"}
-      </span>
-    </p>
-  );
-};
-
-function Quries() {
-  const [quires, setQuries] = useState("");
+function BadReviewdShops() {
+  const [badReviewdProducts, setBadReviewdProducts] = useState([]);
+  const [shops, setShops] = useState([]);
+  const [shopOwners, setShopOwners] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = useState("");
-
+  const [open, setOpen] = React.useState(false);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -100,26 +88,58 @@ function Quries() {
     setPage(0);
   };
 
-  const fetchQuries = () => {
-    fetch("http://localhost:4000/admins/quries")
-      .then((response) => response.json())
-      .then((actualData) => {
-        setQuries(actualData);
-        console.log(actualData);
+  const badReviewd = () => {
+    axios
+      .post("http://localhost:4000/shops/sentiment")
+      .then((res) => {
+        setBadReviewdProducts(res.data.badReviewPro);
+        console.log(res.data.pro);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err);
       });
   };
 
+  const badShops = () => {
+    badReviewdProducts.map((items) => {
+      console.log("ii");
+      console.log(items.owner);
+      setShops([...shops, items.owner]);
+    });
+    console.log(shops);
+  };
+  const allShops = () => {
+    shops.map((items) => {
+      axios
+        .get("http://localhost:4000/shopowners/" + items)
+        .then((res) => {
+          setShopOwners(res.data);
+          console.log(items);
+          console.log(res.data);
+          console.log(items);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    console.log(shops);
+  };
+
   useEffect(() => {
-    fetchQuries();
+    badReviewd();
+    allShops();
   }, []);
+  useEffect(() => {
+    if (badReviewdProducts) {
+      badShops();
+    }
+  }, [badReviewdProducts]);
+  let url = `http://localhost:3000/singleProduct/${badReviewdProducts._id}/${badReviewdProducts.owner}`;
   return (
-    <>
+    <div>
       <div className="text-center ml-3 mt-4" style={{ width: "100%" }}>
-        <h5 style={{ display: "inline-block" }}>Total Quries =</h5>
-        <h5 style={{ display: "inline-block" }}>{quires.length}</h5>
+        <h5 style={{ display: "inline-block" }}>Total Products =</h5>
+        <h5 style={{ display: "inline-block" }}>{badReviewdProducts.length}</h5>
         <div class=" container d-flex justify-content-center">
           <div className="">
             <Box>
@@ -127,7 +147,7 @@ function Quries() {
                 <Search>
                   {/* <SearchIconWrapper><SearchIcon /></SearchIconWrapper> */}
                   <StyledInputBase
-                    placeholder="Search By Name"
+                    placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
                     onChange={(e) => {
                       setSearch(e.target.value);
@@ -142,23 +162,23 @@ function Quries() {
           <thead>
             <tr>
               <th>Sr #</th>
-              <th>Name</th>
+              <th>Product Name</th>
               {/* <th>Last Name</th> */}
-              <th>Subject</th>
-              <th>Email</th>
-              <th>Message</th>
+              <th>Owner</th>
+              <th>Phone</th>
+              <th>Review</th>
+              <th>Visit</th>
             </tr>
           </thead>
           <tbody>
-            {Object.values(quires)
+            {Object.values(badReviewdProducts)
               .filter((person) => {
                 if (search == "") {
                   return person;
                 } else if (
-                  person.firstName
+                  person.product_name
                     .toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                  person.lastName.toLowerCase().includes(search.toLowerCase())
+                    .includes(search.toLowerCase())
                 ) {
                   return person;
                 }
@@ -170,32 +190,61 @@ function Quries() {
                   style={{ cursor: "pointer", textAlign: "left" }}
                 >
                   <td>{index + 1}</td>
+                  <td>{item.product_name}</td>
+                  <td>{item.owner}</td>
+                  <td>{item.product_price}</td>
+
                   <td>
-                    {item.firstName} {item.lastName}
+                    {item.reviews &&
+                      item.reviews?.map((rew, index) => (
+                        <div key={index}>
+                          <div class="col">
+                            <strong>{index + 1}.</strong> {rew.comment}
+                          </div>
+                        </div>
+                      ))}
                   </td>
-                  {/* <td>{item.lastName}</td> */}
-                  <td>{item.subject}</td>
-                  <td>{item.email}</td>
-                  <td className="text-left">
-                    <ReadMore>{item.message}</ReadMore>
+                  <td>
+                    <button className="buttons btn text-white btn-block btn-danger">
+                      <a
+                        href={`http://localhost:3000/singleProduct/${item._id}/${item.owner}`}
+                        target="_blank"
+                        className=" text-white"
+                      >
+                        Visit
+                      </a>
+                    </button>
+                  </td>
+                  <td>
+                    {/* {item.map((rev) => {
+                      rev.reviews;
+                    })} */}
                   </td>
                 </tr>
               ))}
           </tbody>
         </table>
-
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            User Delete successfully
+          </Alert>
+        </Snackbar>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={quires.length}
+          count={badReviewdProducts.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-    </>
+    </div>
   );
 }
 
-export default Quries;
+export default BadReviewdShops;

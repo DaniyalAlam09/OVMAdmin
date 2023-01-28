@@ -1,4 +1,4 @@
-.order {
+/* .order {
   background-image: linear-gradient(120deg, #1da599 0%, #57bdc9 100%);
 }
 .order h5,
@@ -31,4 +31,25 @@
 .read-or-hide {
   color: rgb(192, 192, 192);
   cursor: pointer;
+} */
+
+.underline {
+  transition: text-decoration 3s;
+  transition-delay: 1s;
+}
+.underline:hover {
+  text-decoration: underline;
+}
+.block {
+  transition: 0.5s;
+  cursor: pointer;
+}
+.block:hover {
+  /* opacity: 0.1; */
+  /* filter: blur(0.08rem); */
+  /* opacity: 0.5; */
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  /* box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
+    rgba(90, 125, 188, 0.05) 0px 0.25em 1em; */
 }

@@ -184,7 +184,7 @@ const Customers = () => {
                 </td>
                 {/* <td>{item.lastName}</td> */}
                 <td>{item.email}</td>
-                <td>{item.phoneNo}</td>
+                <td>+92 {item.phoneNo}</td>
                 <td>
                   <button
                     onClick={() => {

@@ -8,6 +8,7 @@ import ReorderIcon from "@mui/icons-material/Reorder";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,11 @@ const Sidebar = ({ children }) => {
       path: "shopowners",
       name: "Shop Owners",
       icon: <ShopIcon />,
+    },
+    {
+      path: "badreviewdshops",
+      name: "Bad Reviewd Products",
+      icon: <ThumbDownOffAltIcon />,
     },
     {
       path: "quries",

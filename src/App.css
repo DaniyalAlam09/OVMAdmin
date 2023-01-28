@@ -11,21 +11,21 @@ body {
   background-color: white;
 }
 .buttons {
-  background-color: #1da599;
+  background-color: #0c8aa0;
   margin-left: 0.5em;
   outline: none;
   border: none;
 }
 .buttons:hover {
   cursor: pointer;
-  background-color: #0f615a;
+  background-color: #0ea2bd;
 }
 a {
-  color: #1da599;
+  color: #0c8aa0;
 }
 a:hover {
   text-decoration: none;
-  color: #0f615a;
+  color: #000000;
 }
 
 .heading {
@@ -49,10 +49,10 @@ a:hover {
 }
 main {
   width: 100%;
-  padding: 20px;
+  padding: 5px;
 }
 .sidebar {
-  background: #1da599;
+  background: #0c8aa0;
   color: #fff;
   height: 100vh;
   width: 200px;
@@ -65,6 +65,7 @@ main {
 }
 .logo {
   font-size: 30px;
+  cursor: pointer;
 }
 .bars {
   display: flex;
@@ -79,15 +80,15 @@ main {
   transition: all 0.5s;
 }
 .link:hover {
-  background: lightskyblue;
-  color: #000;
+  background: #fff;
+  color: #0c8aa0;
   transition: all 0.5s;
 }
 .active {
-  background: lightskyblue;
-  color: #000;
+  background: #fff;
+  color: #0c8aa0;
 }
 .icon,
 .link_text {
-  font-size: 20px;
+  font-size: 15px;
 }

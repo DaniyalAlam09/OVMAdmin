@@ -80,6 +80,7 @@ const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
   const [blocked, setBlocked] = React.useState(false);
   const [deleteshop, setDeleteShop] = React.useState(false);
+  const [badReviwes, setBadReviwes] = React.useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -101,6 +102,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   useEffect(() => {
     fetchShops();
+    bestReviewd();
   }, []);
   const fetchShops = () => {
     fetch("http://localhost:4000/admins/viewshopowners")
@@ -114,6 +116,17 @@ const Dashboard = () => {
         console.log(err.message);
       });
   };
+  const bestReviewd = () => {
+    axios
+      .post("http://localhost:4000/shops/bad")
+      .then((res) => {
+        setBadReviwes(res.data.pro);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleDelete = (id) => {
     // console.log(userID);
     axios
@@ -217,7 +230,7 @@ const Dashboard = () => {
             })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item, index) => (
-              <tr key={index} style={{ cursor: "pointer" }}>
+              <tr key={index} style={{ cursor: "pointer", textAlign: "left" }}>
                 <td>{index + 1}</td>
                 <td>
                   {item.firstName} {item.lastName}
@@ -232,7 +245,7 @@ const Dashboard = () => {
                 <td>{item.shopNo}</td>
                 <td>{item.floor}</td>
                 <td>{item?.products?.length}</td>
-                <td>{item.phone}</td>
+                <td>+92{item.phone}</td>
                 <td>
                   <button
                     onClick={() => {

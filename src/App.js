@@ -13,6 +13,7 @@ import Quries from "./pages/Quries.js";
 import Login from "./components/Login";
 import Homex from "./pages/Homex";
 import Logout from "./pages/Logout.jsx";
+import BadReviewdShops from "./pages/BadReviewdShops";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="customers" element={<Customers />} />
           <Route path="shopowners" element={<ShopOwners />} />
           <Route path="quries" element={<Quries />} />
+          <Route path="badreviewdshops" element={<BadReviewdShops />} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="logout" element={<Logout />} />
         </Route>
