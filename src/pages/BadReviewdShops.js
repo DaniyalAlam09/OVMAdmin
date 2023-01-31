@@ -165,7 +165,7 @@ function BadReviewdShops() {
               <th>Product Name</th>
               {/* <th>Last Name</th> */}
               <th>Owner</th>
-              <th>Phone</th>
+              <th>Price</th>
               <th>Review</th>
               <th>Visit</th>
             </tr>
