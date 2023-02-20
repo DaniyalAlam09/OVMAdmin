@@ -177,8 +177,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="text-center mt-4">
-      <h5 style={{ display: "inline-block" }}>Total Registered Customers =</h5>
+    <div className="text-center ml-3 mt-4" style={{ width: "100%" }}>
+      <h5 style={{ display: "inline-block" }}>Total Registered Shops =</h5>
       <h5 style={{ display: "inline-block" }}>{user.length}</h5>
       <div class=" container d-flex justify-content-center">
         <div className="">
@@ -208,7 +208,7 @@ const Dashboard = () => {
             <th>Status</th>
             <th>Shop Name</th>
             <th>Shop Number</th>
-            <th>Floor</th>
+            {/* <th>Floor</th> */}
             <th>No Of Products</th>
             {/* <th>Catagorey</th> */}
             <th>Phone Number</th>
@@ -243,7 +243,7 @@ const Dashboard = () => {
                 </td>
                 <td>{item.shopName}</td>
                 <td>{item.shopNo}</td>
-                <td>{item.floor}</td>
+                {/* <td>{item.floor}</td> */}
                 <td>{item?.products?.length}</td>
                 <td>+92{item.phone}</td>
                 <td>
@@ -302,7 +302,7 @@ const Dashboard = () => {
         </Alert>
       </Snackbar>
       <TablePagination
-        rowsPerPageOptions={[7, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={user.length}
         rowsPerPage={rowsPerPage}

@@ -8,6 +8,7 @@ function Dashboard() {
   const [products, setProducts] = useState("");
   const [quires, setQuries] = useState("");
   const [subscription, setSubscription] = useState("");
+  const [orders, setOrders] = useState("");
   const fetchUsers = () => {
     fetch("http://localhost:4000/admins/viewcustomers")
       .then((response) => response.json())
@@ -61,18 +62,30 @@ function Dashboard() {
         console.log(err.message);
       });
   };
+  const fetchOrders = () => {
+    fetch("http://localhost:4000/order/allorders")
+      .then((response) => response.json())
+      .then((actualData) => {
+        setOrders(actualData);
+        console.log(actualData);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
   useEffect(() => {
     fetchUsers();
     fetchShops();
     fetchProducts();
     fetchQuries();
     fetchSubscription();
+    fetchOrders();
   }, []);
   return (
     <div className="col">
       <div className="container mt-5 d-flex justify-content-around">
         <Link
-          to="admin/customers"
+          to="/admin/customers"
           className="block border text-center pt-4 m-3"
           style={{
             height: "150px",
@@ -161,7 +174,7 @@ function Dashboard() {
           <h5 className="block-text text-dark">Total Orders</h5>
           <p className="block-text block-p">
             {" "}
-            <CountUp end={subscription.length} duration={1} />
+            <CountUp end={orders?.length} duration={1} />
           </p>
         </div>
       </div>
