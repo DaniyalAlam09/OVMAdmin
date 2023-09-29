@@ -105,7 +105,7 @@ const Dashboard = () => {
     bestReviewd();
   }, []);
   const fetchShops = () => {
-    fetch("http://localhost:4000/admins/viewshopowners")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewshopowners")
       .then((response) => response.json())
       .then((actualData) => {
         console.log(actualData);
@@ -118,7 +118,7 @@ const Dashboard = () => {
   };
   const bestReviewd = () => {
     axios
-      .post("http://localhost:4000/shops/bad")
+      .post("https://red-gorgeous-bandicoot.cyclic.app/shops/bad")
       .then((res) => {
         setBadReviwes(res.data.pro);
       })
@@ -130,7 +130,7 @@ const Dashboard = () => {
   const handleDelete = (id) => {
     // console.log(userID);
     axios
-      .get(`http://localhost:4000/admins/deleteshopowner/${id}`)
+      .get(`https://red-gorgeous-bandicoot.cyclic.app/admins/deleteshopowner/${id}`)
       .then((user) => {
         console.log(id);
         fetchShops();
@@ -146,7 +146,7 @@ const Dashboard = () => {
   const handleBlock = (id) => {
     // console.log(userID);
     axios
-      .post(`http://localhost:4000/admins/block/${id}`)
+      .post(`https://red-gorgeous-bandicoot.cyclic.app/admins/block/${id}`)
       .then((user) => {
         console.log(id);
         fetchShops();
@@ -162,7 +162,7 @@ const Dashboard = () => {
   const handleUnBlock = (id) => {
     // console.log(userID);
     axios
-      .post(`http://localhost:4000/admins/unblock/${id}`)
+      .post(`https://red-gorgeous-bandicoot.cyclic.app/admins/unblock/${id}`)
       .then((user) => {
         console.log(id);
         fetchShops();

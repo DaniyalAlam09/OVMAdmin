@@ -15,7 +15,7 @@ const Logout = () => {
       withCredentials: true,
     };
     axios
-      .get("http://localhost:4000/users/logout", config)
+      .get("https://red-gorgeous-bandicoot.cyclic.app/users/logout", config)
       .then((response) => {
         console.log(response.data);
 

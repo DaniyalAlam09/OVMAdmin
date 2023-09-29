@@ -18,7 +18,7 @@ function Subscription() {
   };
 
   const fetchSubscription = () => {
-    fetch("http://localhost:4000/admins/viewsubscriptions")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewsubscriptions")
       .then((response) => response.json())
       .then((actualData) => {
         setSubscription(actualData);
