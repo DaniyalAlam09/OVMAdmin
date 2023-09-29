@@ -90,7 +90,7 @@ function BadReviewdShops() {
 
   const badReviewd = () => {
     axios
-      .post("http://localhost:4000/shops/sentiment")
+      .post("https://red-gorgeous-bandicoot.cyclic.app/shops/sentiment")
       .then((res) => {
         setBadReviewdProducts(res.data.badReviewPro);
         console.log(res.data.pro);
@@ -111,7 +111,7 @@ function BadReviewdShops() {
   const allShops = () => {
     shops.map((items) => {
       axios
-        .get("http://localhost:4000/shopowners/" + items)
+        .get("https://red-gorgeous-bandicoot.cyclic.app/shopowners/" + items)
         .then((res) => {
           setShopOwners(res.data);
           console.log(items);

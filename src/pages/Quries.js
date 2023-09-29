@@ -101,7 +101,7 @@ function Quries() {
   };
 
   const fetchQuries = () => {
-    fetch("http://localhost:4000/admins/quries")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/quries")
       .then((response) => response.json())
       .then((actualData) => {
         setQuries(actualData);

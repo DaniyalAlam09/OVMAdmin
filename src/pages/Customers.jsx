@@ -103,7 +103,7 @@ const Customers = () => {
     fetchUsers();
   }, []);
   const fetchUsers = () => {
-    fetch("http://localhost:4000/admins/viewcustomers")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewcustomers")
       .then((response) => response.json())
       .then((actualData) => {
         console.log(actualData);
@@ -118,7 +118,7 @@ const Customers = () => {
   const handleDelete = (id) => {
     // console.log(userID);
     axios
-      .delete(`http://localhost:4000/admins/deleteuser/${id}`)
+      .delete(`https://red-gorgeous-bandicoot.cyclic.app/admins/deleteuser/${id}`)
       .then((user) => {
         console.log("user delete");
         fetchUsers();

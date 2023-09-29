@@ -10,7 +10,7 @@ function Dashboard() {
   const [subscription, setSubscription] = useState("");
   const [orders, setOrders] = useState("");
   const fetchUsers = () => {
-    fetch("http://localhost:4000/admins/viewcustomers")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewcustomers")
       .then((response) => response.json())
       .then((actualData) => {
         setUser(actualData);
@@ -20,7 +20,7 @@ function Dashboard() {
       });
   };
   const fetchShops = () => {
-    fetch("http://localhost:4000/admins/viewshopowners")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewshopowners")
       .then((response) => response.json())
       .then((actualData) => {
         setShop(actualData);
@@ -30,7 +30,7 @@ function Dashboard() {
       });
   };
   const fetchProducts = () => {
-    fetch("http://localhost:4000/shopowners/viewproducts")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/shopowners/viewproducts")
       .then((response) => response.json())
       .then((actualData) => {
         setProducts(actualData);
@@ -40,7 +40,7 @@ function Dashboard() {
       });
   };
   const fetchQuries = () => {
-    fetch("http://localhost:4000/admins/quries")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/quries")
       .then((response) => response.json())
       .then((actualData) => {
         setQuries(actualData);
@@ -52,7 +52,7 @@ function Dashboard() {
   };
 
   const fetchSubscription = () => {
-    fetch("http://localhost:4000/admins/viewsubscriptions")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/admins/viewsubscriptions")
       .then((response) => response.json())
       .then((actualData) => {
         setSubscription(actualData);
@@ -63,7 +63,7 @@ function Dashboard() {
       });
   };
   const fetchOrders = () => {
-    fetch("http://localhost:4000/order/allorders")
+    fetch("https://red-gorgeous-bandicoot.cyclic.app/order/allorders")
       .then((response) => response.json())
       .then((actualData) => {
         setOrders(actualData);
